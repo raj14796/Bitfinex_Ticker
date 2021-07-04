@@ -14,9 +14,10 @@ const App = () => {
         if (connectButtonIsClicked) {
             function alwaysRun(runOnlyForServerError) {
                 dispatch(createWebSocketConnection(ws));
-                if (!webSocketIsConnected)
+                if (!webSocketIsConnected) {
                     console.log("webSocketIsConnected")
-                runOnlyForServerError()
+                    runOnlyForServerError()
+                }
             }
             alwaysRun(function () {
                 setTimeout(() => {
