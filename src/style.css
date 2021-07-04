@@ -1,0 +1,54 @@
+.tickerBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    width: 500px;
+    height: 150px;
+}
+.logo{
+    max-height: 75px;
+    max-width: 75px;
+}
+.tickerData{
+    width: 400px;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tickerData p{
+    color: white;
+}
+
+.tickerData p span{
+    color: rgba(245, 245, 245, 0.685);
+}
+
+#dailyChange1{
+    color: greenyellow;
+}
+#dailyChange2{
+    color: tomato;
+}
+
+.buttonsDiv{
+    display: flex;
+    justify-content: space-around;
+    width: 500px;
+}
+
+button{
+    cursor: pointer;
+    width: 50%;
+    display: block;
+    color: white;
+}
+
+.buttonsDiv .button1{
+    background-color: green;
+}
+
+.buttonsDiv .button2{
+    background-color: red;
+}

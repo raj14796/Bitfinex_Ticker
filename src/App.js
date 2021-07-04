@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { createWebSocketConnection, closeWebSocketConnection } from './action/action'
+import Ticker from './Ticker'
+import './style.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const webSocketIsConnected = useSelector(state => state.connection)
+    const [connectButtonIsClicked, setConnectButtonIsClicked] = useState(true)
+    const dispatch = useDispatch();
+    const ws = useMemo(() => new WebSocket('wss://api-pub.bitfinex.com/ws/2'), [connectButtonIsClicked])
+
+    useEffect(() => {
+        if (connectButtonIsClicked) {
+            function alwaysRun(runOnlyForServerError) {
+                dispatch(createWebSocketConnection(ws));
+                if (!webSocketIsConnected)
+                    console.log("webSocketIsConnected")
+                runOnlyForServerError()
+            }
+            alwaysRun(function () {
+                setTimeout(() => {
+                    dispatch(createWebSocketConnection(ws));
+                }, 2000)
+            })
+        }
+    }, [dispatch, connectButtonIsClicked, ws, webSocketIsConnected])
+
+    const handleConnect = () => {
+        setConnectButtonIsClicked(true)
+    }
+
+    const handleDisconnect = () => {
+        setConnectButtonIsClicked(false)
+        dispatch(closeWebSocketConnection(ws))
+    }
+
+    return (
+        <div>
+            <Ticker />
+            <div className="buttonsDiv">
+                <button className="button1" disabled={connectButtonIsClicked} onClick={() => handleConnect()}>Connect</button>
+                <button className="button2" disabled={!connectButtonIsClicked} onClick={() => handleDisconnect()}>Disconnect</button>
+            </div>
+        </div>
+    )
 }
 
-export default App;
+export default App
