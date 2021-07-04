@@ -15,13 +15,14 @@ const App = () => {
             function alwaysRun(runOnlyForServerError) {
                 dispatch(createWebSocketConnection(ws));
                 if (!webSocketIsConnected) {
-                    console.log("webSocketIsConnected")
+                    console.log("webSocketIsConnected",webSocketIsConnected)
                     runOnlyForServerError()
                 }
             }
             alwaysRun(function () {
                 setTimeout(() => {
-                    dispatch(createWebSocketConnection(ws));
+                    const ws2 = new WebSocket('wss://api-pub.bitfinex.com/ws/2')
+                    dispatch(createWebSocketConnection(ws2));
                 }, 2000)
             })
         }
